@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CRM Admin Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root { --primary:#6366f1; --primary-dark:#4f46e5; --danger:#ef4444; --font:'Plus Jakarta Sans',sans-serif; }
+    [data-theme="light"] { --bg:#f1f5f9; --surface:#ffffff; --text:#0f172a; --text2:#475569; --muted:#94a3b8; --border:#e2e8f0; --input-bg:#f8fafc; --shadow:0 8px 32px rgba(99,102,241,0.12); }
+    [data-theme="dark"]  { --bg:#0f172a; --surface:#1e293b; --text:#f1f5f9; --text2:#94a3b8; --muted:#64748b; --border:#334155; --input-bg:#0f172a; --shadow:0 8px 32px rgba(0,0,0,0.5); }
+    *,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+    html,body { height:100%; }
+    body { font-family:var(--font); background:var(--bg); min-height:100vh; display:flex; align-items:center; justify-content:center; padding:1rem; transition:background 0.3s; }
+    body::before { content:''; position:fixed; inset:0; background:radial-gradient(ellipse at 25% 40%,rgba(99,102,241,0.09) 0%,transparent 55%),radial-gradient(ellipse at 75% 70%,rgba(16,185,129,0.05) 0%,transparent 50%); pointer-events:none; }
+
+    .theme-btn { position:fixed; top:1.25rem; right:1.25rem; width:44px; height:44px; background:var(--surface); border:1.5px solid var(--border); border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--text2); font-size:1rem; z-index:999; box-shadow:var(--shadow); transition:all 0.3s; }
+    .theme-btn:hover { color:var(--primary); transform:rotate(15deg) scale(1.1); }
+
+    .login-wrap { width:100%; max-width:420px; position:relative; z-index:1; }
+    .login-card { background:var(--surface); border-radius:24px; padding:clamp(1.75rem,5vw,2.5rem); box-shadow:var(--shadow); border:1px solid var(--border); transition:background 0.3s,border-color 0.3s; }
+
+    .login-logo { display:flex; align-items:center; gap:0.75rem; margin-bottom:2rem; }
+    .logo-icon { width:46px; height:46px; background:linear-gradient(135deg,var(--primary),var(--primary-dark)); border-radius:12px; display:flex; align-items:center; justify-content:center; color:white; font-size:1.2rem; box-shadow:0 4px 16px rgba(99,102,241,0.35); flex-shrink:0; }
+    .logo-text { font-size:1.3rem; font-weight:800; color:var(--text); }
+    .logo-text span { color:var(--primary); }
+
+    h1 { font-size:clamp(1.5rem,4vw,1.8rem); font-weight:800; color:var(--text); margin-bottom:0.4rem; }
+    .login-sub { color:var(--text2); font-size:0.9rem; margin-bottom:2rem; font-weight:500; }
+
+    .form-group { margin-bottom:1.1rem; }
+    .form-group label { display:block; font-size:0.82rem; font-weight:700; color:var(--text); margin-bottom:0.5rem; }
+    .input-wrap { position:relative; }
+    .input-wrap i { position:absolute; left:0.9rem; top:50%; transform:translateY(-50%); color:var(--muted); font-size:0.88rem; pointer-events:none; }
+    .form-group input { width:100%; padding:0.85rem 1rem 0.85rem 2.6rem; border:1.5px solid var(--border); border-radius:12px; font-family:var(--font); font-size:0.9rem; color:var(--text); background:var(--input-bg); outline:none; transition:all 0.2s; font-weight:500; }
+    .form-group input::placeholder { color:var(--muted); }
+    .form-group input:focus { border-color:var(--primary); box-shadow:0 0 0 3px rgba(99,102,241,0.12); background:var(--surface); }
+
+    .btn-login { width:100%; padding:0.95rem; background:linear-gradient(135deg,var(--primary),var(--primary-dark)); color:white; border:none; border-radius:12px; font-family:var(--font); font-size:0.95rem; font-weight:700; cursor:pointer; transition:all 0.3s; display:flex; align-items:center; justify-content:center; gap:0.5rem; box-shadow:0 4px 16px rgba(99,102,241,0.35); margin-top:0.5rem; }
+    .btn-login:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(99,102,241,0.45); }
+    .btn-login:disabled { opacity:0.7; cursor:not-allowed; transform:none; }
+
+    .error-msg { display:none; background:rgba(239,68,68,0.08); border:1px solid rgba(239,68,68,0.2); color:var(--danger); padding:0.75rem 1rem; border-radius:10px; font-size:0.83rem; margin-bottom:1rem; text-align:center; font-weight:600; }
+    .login-footer { text-align:center; margin-top:1.5rem; font-size:0.78rem; color:var(--muted); font-weight:500; }
+    .login-footer span { color:var(--primary); font-weight:700; }
+  </style>
+</head>
+<body>
+<button class="theme-btn" onclick="toggleTheme()" title="Toggle theme"><i id="theme-icon" class="fas fa-moon"></i></button>
+<div class="login-wrap">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="logo-icon"><i class="fas fa-chart-line"></i></div>
+      <div class="logo-text">Lead<span>CRM</span></div>
+    </div>
+    <h1>Welcome back 👋</h1>
+    <p class="login-sub">Sign in to your admin dashboard</p>
+    <div class="error-msg" id="error-msg"><i class="fas fa-exclamation-circle"></i> <span id="error-text"></span></div>
+    <form id="login-form">
+      <div class="form-group">
+        <label>Email Address</label>
+        <div class="input-wrap"><i class="fas fa-envelope"></i><input type="email" id="email" placeholder="admin@example.com" required/></div>
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <div class="input-wrap"><i class="fas fa-lock"></i><input type="password" id="password" placeholder="••••••••" required/></div>
+      </div>
+      <button type="submit" class="btn-login" id="login-btn"><i class="fas fa-sign-in-alt"></i> Sign In</button>
+    </form>
+    <div class="login-footer">Future Interns CRM · <span>Admin Only</span></div>
+  </div>
+</div>
+<script>
+  const savedTheme = localStorage.getItem('crm_theme') || 'light';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  document.getElementById('theme-icon').className = savedTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+
+  function toggleTheme() {
+    const curr = document.documentElement.getAttribute('data-theme');
+    const next = curr === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('crm_theme', next);
+    document.getElementById('theme-icon').className = next === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+  }
+
+  if (localStorage.getItem('crm_token')) window.location.href = 'dashboard.html';
+
+  document.getElementById('login-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const btn = document.getElementById('login-btn');
+    const errDiv = document.getElementById('error-msg');
+    const errText = document.getElementById('error-text');
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in...';
+    btn.disabled = true; errDiv.style.display = 'none';
+    try {
+      const res = await fetch('http://localhost:5000/api/auth/login', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ email: document.getElementById('email').value, password: document.getElementById('password').value })
+      });
+      const data = await res.json();
+      if (res.ok) { localStorage.setItem('crm_token', data.token); window.location.href = 'dashboard.html'; }
+      else { errText.textContent = data.message || 'Login failed'; errDiv.style.display = 'block'; }
+    } catch { errText.textContent = 'Cannot connect to server. Make sure it is running.'; errDiv.style.display = 'block'; }
+    btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Sign In'; btn.disabled = false;
+  });
+</script>
+</body>
+</html>
