@@ -1,30 +1,37 @@
 const express = require('express');
-const router = express.Router();
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
+const router  = express.Router();
+const jwt     = require('jsonwebtoken');
 
-router.post('/login', async (req, res) => {
+// POST /api/auth/login
+router.post('/login', (req, res) => {
   const { email, password } = req.body;
 
-  const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
-  const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+  // Get admin details from .env
+  const adminEmail    = process.env.ADMIN_EMAIL;
+  const adminPassword = process.env.ADMIN_PASSWORD;
+  const jwtSecret     = process.env.JWT_SECRET;
 
-  if (!ADMIN_EMAIL || !ADMIN_PASSWORD) {
-    return res.status(500).json({ message: 'Server config error. Check .env file.' });
+  // If server env isn't set up, fail with a clear message
+  if (!adminEmail || !adminPassword || !jwtSecret) {
+    return res.status(500).json({
+      message: 'Server auth is not configured. Set ADMIN_EMAIL, ADMIN_PASSWORD, and JWT_SECRET in .env and restart the server.'
+    });
   }
 
-  if (email !== ADMIN_EMAIL) {
-    return res.status(401).json({ message: 'Invalid credentials' });
+  const inputEmail = String(email || '').trim().toLowerCase();
+  const inputPass  = String(password || '').trim();
+  const envEmail   = String(adminEmail).trim().toLowerCase();
+  const envPass    = String(adminPassword).trim();
+
+  // Check if email and password are correct
+  if (inputEmail !== envEmail || inputPass !== envPass) {
+    return res.status(401).json({ message: 'Wrong email or password.' });
   }
 
-  const match = await bcrypt.compare(password, bcrypt.hashSync(ADMIN_PASSWORD, 10));
+  // Create a token that lasts 8 hours
+  const token = jwt.sign({ email: envEmail }, jwtSecret, { expiresIn: '8h' });
 
-  // Direct comparison instead of pre-hashing
-  if (password !== ADMIN_PASSWORD) {
-    return res.status(401).json({ message: 'Invalid credentials' });
-  }
-
-  const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '8h' });
+  // Send token back to frontend
   res.json({ token });
 });
 
