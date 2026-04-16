@@ -83,7 +83,7 @@ http://localhost:5001
 ### Dashboard Overview
 3.png
 ### All Leads View
-1.png
+1.![alt text](2.png)
 
 ### Lead Detail Modal
 4.png
