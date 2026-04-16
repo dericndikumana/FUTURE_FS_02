@@ -1,4 +1,4 @@
-g# 📊 LeadCRM - Lead Management System
+# 📊 LeadCRM - Lead Management System
 
 A modern, full-stack CRM application for managing and tracking client leads with real-time updates, status tracking, and lead analytics.
 
@@ -78,15 +78,16 @@ http://localhost:5001
 ## 📸 Screenshots
 
 ### Login Page
-2.png
+![Login Page](./2.png)
 
 ### Dashboard Overview
-3.png
+![Dashboard Overview](./3.png)
+
 ### All Leads View
-1.![alt text](2.png)
+![All Leads View](./1.png)
 
 ### Lead Detail Modal
-4.png
+![Lead Detail Modal](./4.png)
 
 ---
 
