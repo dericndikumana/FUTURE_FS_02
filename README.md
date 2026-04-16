@@ -78,15 +78,15 @@ http://localhost:5001
 ## 📸 Screenshots
 
 ### Login Page
-![Login Page] ![alt text](2.png)
+![alt text](2.png)
 
 ### Dashboard Overview
-![Dashboard] ![alt text](3.png)
+![alt text](3.png)
 ### All Leads View
-![Leads Table] ![alt text](1.png)
+ ![alt text](1.png)
 
 ### Lead Detail Modal
-![Lead Detail] ![alt text](4.png)
+![alt text](4.png)
 
 ---
 
