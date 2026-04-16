@@ -1,41 +1,68 @@
-const express  = require('express');
-const mongoose = require('mongoose');
-const cors     = require('cors');
-require('dotenv').config();
+const express = require('express');
+const { Pool } = require('pg');
+const cors = require('cors');
+const path = require('path');
+
+// Ensure .env is loaded from the current directory
+require('dotenv').config({ path: path.join(__dirname, '.env') });
 
 const app = express();
-const PORT = Number(process.env.PORT) || 5000;
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/crm-db';
+const PORT = process.env.PORT || 5001;
 
-// Allow frontend to talk to backend
+// Debugging: Check if the string is loaded
+if (!process.env.DATABASE_URL) {
+    console.error("❌ ERROR: DATABASE_URL not found in .env file!");
+    process.exit(1);
+}
+
+// Neon Connection Pool
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false }
+});
+
 app.use(cors());
 app.use(express.json());
-
-// Serve frontend files
 app.use(express.static('frontend'));
 
-// Connect routes
-app.use('/api/auth',  require('./routes/auth'));
-app.use('/api/leads', require('./routes/leads'));
+// Database Initialization
+const initDB = async () => {
+  const queryText = `
+    CREATE TABLE IF NOT EXISTS leads (
+      id SERIAL PRIMARY KEY,
+      name TEXT NOT NULL,
+      email TEXT NOT NULL UNIQUE,
+      phone TEXT,
+      source TEXT DEFAULT 'Website',
+      status TEXT DEFAULT 'new',
+      followUpDate DATE,
+      notes JSONB DEFAULT '[]',
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+  `;
+  try {
+    await pool.query(queryText);
+    console.log('✅ Neon Table Ready');
+  } catch (err) {
+    console.error('❌ Table Creation Error:', err.message);
+  }
+};
 
-// Connect to MongoDB and start server
-mongoose.connect(MONGO_URI)
+// Test connection and Init Table
+pool.connect()
   .then(() => {
-    console.log('✅ MongoDB connected');
-    const server = app.listen(PORT, () => {
-      console.log(`🚀 Server running on http://localhost:${PORT}`);
-    }).on('error', (err) => {
-      if (err && err.code === 'EADDRINUSE') {
-        console.error(`❌ Port ${PORT} is already in use. Stop the other process or change PORT in .env.`);
-        process.exit(1);
-      }
-      throw err;
-    });
-
-    // Allow Ctrl+C to close cleanly
-    process.on('SIGINT', async () => {
-      try { await mongoose.connection.close(); } catch {}
-      server.close(() => process.exit(0));
-    });
+    console.log('✅ Connected to Neon PostgreSQL');
+    initDB();
   })
-  .catch(err => console.error('❌ Error:', err));
+  .catch(err => console.error('❌ Connection Error:', err.message));
+
+// Pass the 'pool' to your routes
+app.use('/api/auth', require('./routes/auth'));
+app.use('/api/leads', (req, res, next) => {
+  req.pool = pool; 
+  next();
+}, require('./routes/leads'));
+
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on http://localhost:${PORT}`);
+});

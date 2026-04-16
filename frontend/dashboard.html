@@ -6,21 +6,19 @@
   <title>Dashboard | LeadCRM</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
   <style>
-    /* ── THEME ── */
     [data-theme="light"] { --bg:#f1f5f9; --surface:#ffffff; --surface2:#f8fafc; --text:#0f172a; --text2:#475569; --muted:#94a3b8; --border:#e2e8f0; }
     [data-theme="dark"]  { --bg:#0f172a; --surface:#1e293b; --surface2:#162032; --text:#f1f5f9; --text2:#94a3b8; --muted:#64748b; --border:#334155; }
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
     body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);display:flex;min-height:100vh;transition:background 0.3s,color 0.3s;}
 
-    /* ── SIDEBAR ── */
+    /* SIDEBAR */
     .sidebar{width:240px;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:200;transition:transform 0.3s,background 0.3s;}
     .sidebar-logo{padding:1.25rem 1.5rem;display:flex;align-items:center;gap:0.75rem;border-bottom:1px solid var(--border);height:64px;}
     .logo-icon{width:36px;height:36px;background:linear-gradient(135deg,#6366f1,#4f46e5);border-radius:9px;display:flex;align-items:center;justify-content:center;color:white;font-size:0.95rem;flex-shrink:0;}
     .logo-text{font-size:1.1rem;font-weight:800;color:var(--text);}
     .logo-text span{color:#6366f1;}
-    .sidebar-nav{padding:0.75rem;flex:1;overflow-y:auto;}
+    .sidebar-nav{padding:0.75rem;flex:1;}
     .nav-section{font-size:0.62rem;font-weight:700;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;padding:0.5rem 0.75rem;margin-top:0.5rem;}
     .nav-item{display:flex;align-items:center;gap:0.75rem;padding:0.7rem 0.75rem;color:var(--text2);text-decoration:none;font-size:0.88rem;font-weight:600;border-radius:10px;transition:all 0.2s;margin-bottom:2px;}
     .nav-item:hover{background:var(--surface2);color:#6366f1;}
@@ -35,80 +33,64 @@
     .logout-btn{width:100%;padding:0.6rem;background:var(--surface2);border:1px solid var(--border);border-radius:9px;color:var(--text2);font-family:'Plus Jakarta Sans',sans-serif;font-size:0.82rem;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:0.5rem;transition:all 0.2s;}
     .logout-btn:hover{background:#fee2e2;color:#ef4444;border-color:rgba(239,68,68,0.25);}
 
-    /* ── TOPBAR ── */
+    /* TOPBAR */
     .topbar{position:fixed;top:0;left:240px;right:0;height:64px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;z-index:100;transition:background 0.3s,left 0.3s;}
     .topbar-left{display:flex;align-items:center;gap:1rem;}
     .menu-btn{display:none;background:none;border:none;cursor:pointer;color:var(--text2);font-size:1.2rem;padding:0.25rem;}
     .topbar-title{font-size:1rem;font-weight:700;color:var(--text);}
     .topbar-right{display:flex;align-items:center;gap:0.75rem;}
-    .date-txt{font-size:0.78rem;color:var(--muted);font-weight:500;}
     .theme-btn{width:36px;height:36px;background:var(--surface2);border:1px solid var(--border);border-radius:9px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text2);font-size:0.92rem;transition:all 0.2s;}
     .theme-btn:hover{color:#6366f1;background:#e0e7ff;}
     [data-theme="dark"] .theme-btn:hover{background:rgba(99,102,241,0.15);}
 
-    /* ── MAIN ── */
+    /* MAIN */
     .main{margin-left:240px;padding-top:64px;flex:1;min-width:0;transition:margin-left 0.3s;}
-    .inner{padding:1.5rem;max-width:1200px;}
+    .inner{padding:1.5rem;}
     .page-title{font-size:1.5rem;font-weight:800;color:var(--text);margin-bottom:0.25rem;}
-    .page-sub{font-size:0.88rem;color:var(--text2);margin-bottom:1.75rem;font-weight:500;}
+    .page-sub{font-size:0.88rem;color:var(--text2);margin-bottom:2rem;font-weight:500;}
 
-    /* ── STAT CARDS ── */
-    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem;}
-    .stat{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.25rem;display:flex;align-items:center;gap:1rem;transition:all 0.2s;}
-    .stat:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.07);}
-    .stat-ico{width:46px;height:46px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;}
-    .ico-purple{background:#e0e7ff;color:#6366f1;} [data-theme="dark"] .ico-purple{background:rgba(99,102,241,0.18);}
-    .ico-cyan{background:#cffafe;color:#06b6d4;}   [data-theme="dark"] .ico-cyan{background:rgba(6,182,212,0.18);}
-    .ico-yellow{background:#fef3c7;color:#f59e0b;} [data-theme="dark"] .ico-yellow{background:rgba(245,158,11,0.18);}
-    .ico-green{background:#d1fae5;color:#10b981;}  [data-theme="dark"] .ico-green{background:rgba(16,185,129,0.18);}
-    .stat-num{font-size:1.75rem;font-weight:800;color:var(--text);line-height:1;}
-    .stat-lbl{font-size:0.76rem;color:var(--muted);margin-top:0.2rem;font-weight:600;}
+    /* STATS GRID */
+    .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1.25rem;margin-bottom:2rem;}
+    .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.5rem;display:flex;align-items:center;gap:1rem;box-shadow:0 1px 3px rgba(0,0,0,0.05);}
+    .stat-icon{width:50px;height:50px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;}
+    .stat-icon.total{background:#e0e7ff;color:#6366f1;}
+    .stat-icon.new{background:#dbeafe;color:#3b82f6;}
+    .stat-icon.contacted{background:#fef3c7;color:#f59e0b;}
+    .stat-icon.converted{background:#d1fae5;color:#10b981;}
+    .stat-content{flex:1;}
+    .stat-label{font-size:0.75rem;color:var(--muted);text-transform:uppercase;font-weight:700;letter-spacing:0.05em;}
+    .stat-value{font-size:1.75rem;font-weight:800;color:var(--text);margin-top:0.25rem;}
 
-    /* ── CHARTS ROW ── */
-    .charts{display:grid;grid-template-columns:1.3fr 0.7fr;gap:1rem;margin-bottom:1.5rem;}
-    .chart-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.5rem;}
-    .card-title{font-size:0.95rem;font-weight:700;color:var(--text);}
-    .card-sub{font-size:0.76rem;color:var(--muted);margin-bottom:1.25rem;margin-top:0.2rem;}
-    .chart-box{position:relative;height:200px;}
+    /* RECENT LEADS */
+    .recent-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.05);}
+    .recent-header{padding:1.5rem;border-bottom:1px solid var(--border);}
+    .recent-title{font-size:1rem;font-weight:700;color:var(--text);}
+    .recent-body{max-height:400px;overflow-y:auto;}
+    .lead-item{padding:1rem 1.5rem;border-bottom:1px solid var(--surface2);display:flex;justify-content:space-between;align-items:center;transition:background 0.2s;}
+    .lead-item:hover{background:var(--surface2);}
+    .lead-item:last-child{border-bottom:none;}
+    .lead-info{flex:1;}
+    .lead-name{font-weight:600;color:var(--text);font-size:0.9rem;}
+    .lead-email{font-size:0.75rem;color:var(--muted);margin-top:0.2rem;}
+    .lead-meta{display:flex;gap:0.5rem;align-items:center;margin-top:0.3rem;}
+    .badge-small{display:inline-flex;padding:0.15rem 0.5rem;border-radius:50px;font-size:0.6rem;font-weight:700;text-transform:uppercase;}
+    .b-new{background:#e0e7ff;color:#6366f1;}
+    .b-contacted{background:#fef3c7;color:#f59e0b;}
+    .b-converted{background:#d1fae5;color:#10b981;}
+    .b-lost{background:#fee2e2;color:#ef4444;}
+    .empty-state{text-align:center;padding:3rem 1.5rem;color:var(--muted);}
+    .empty-state i{font-size:2.5rem;margin-bottom:1rem;display:block;opacity:0.2;}
 
-    /* ── RECENT TABLE ── */
-    .recent{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.5rem;}
-    .card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem;flex-wrap:wrap;gap:0.5rem;}
-    .view-all{font-size:0.8rem;color:#6366f1;text-decoration:none;font-weight:700;display:flex;align-items:center;gap:0.3rem;}
-    table{width:100%;border-collapse:collapse;}
-    th{font-size:0.68rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;padding:0.6rem 0.75rem;border-bottom:1px solid var(--border);text-align:left;}
-    td{padding:0.85rem 0.75rem;border-bottom:1px solid var(--surface2);font-size:0.86rem;color:var(--text);}
-    tr:last-child td{border-bottom:none;}
-    tbody tr:hover td{background:var(--surface2);}
-    .lead-name{font-weight:700;}
-    .lead-email{font-size:0.76rem;color:var(--muted);margin-top:0.1rem;}
-    .badge{display:inline-flex;padding:0.22rem 0.65rem;border-radius:100px;font-size:0.67rem;font-weight:700;text-transform:uppercase;}
-    .b-new{background:#e0e7ff;color:#6366f1;}       [data-theme="dark"] .b-new{background:rgba(99,102,241,0.2);}
-    .b-contacted{background:#fef3c7;color:#f59e0b;} [data-theme="dark"] .b-contacted{background:rgba(245,158,11,0.2);}
-    .b-converted{background:#d1fae5;color:#10b981;}  [data-theme="dark"] .b-converted{background:rgba(16,185,129,0.2);}
-    .b-lost{background:#fee2e2;color:#ef4444;}       [data-theme="dark"] .b-lost{background:rgba(239,68,68,0.2);}
-    .src-tag{background:var(--surface2);color:var(--muted);padding:0.2rem 0.5rem;border-radius:5px;font-size:0.72rem;border:1px solid var(--border);font-weight:600;}
-    .empty{text-align:center;padding:3rem;color:var(--muted);}
-    .empty i{font-size:2.5rem;margin-bottom:1rem;display:block;opacity:0.2;}
-
-    /* ── OVERLAY ── */
-    .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:150;}
+    /* OVERLAY */
+    .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:150;}
     .overlay.show{display:block;}
 
-    /* ── RESPONSIVE ── */
-    @media(max-width:1024px){.stats{grid-template-columns:repeat(2,1fr);}.charts{grid-template-columns:1fr;}}
+    /* RESPONSIVE */
     @media(max-width:768px){
       .sidebar{transform:translateX(-100%);}
       .sidebar.open{transform:translateX(0);}
-      .topbar{left:0;}
-      .main{margin-left:0;}
-      .menu-btn{display:block;}
-      .date-txt{display:none;}
-    }
-    @media(max-width:480px){
-      .stats{grid-template-columns:1fr 1fr;}
-      .inner{padding:1rem;}
-      th:nth-child(3),td:nth-child(3),th:nth-child(4),td:nth-child(4){display:none;}
+      .topbar{left:0;} .main{margin-left:0;} .menu-btn{display:block;}
+      .stats-grid{grid-template-columns:1fr;}
     }
   </style>
 </head>
@@ -116,7 +98,6 @@
 
 <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
 
-<!-- SIDEBAR -->
 <aside class="sidebar" id="sidebar">
   <div class="sidebar-logo">
     <div class="logo-icon"><i class="fas fa-chart-line"></i></div>
@@ -141,64 +122,63 @@
   </div>
 </aside>
 
-<!-- TOPBAR -->
 <div class="topbar">
   <div class="topbar-left">
     <button class="menu-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
     <span class="topbar-title">Dashboard</span>
   </div>
   <div class="topbar-right">
-    <span class="date-txt" id="date-txt"></span>
     <button class="theme-btn" onclick="toggleTheme()" title="Switch theme"><i id="theme-icon" class="fas fa-moon"></i></button>
   </div>
 </div>
 
-<!-- MAIN CONTENT -->
 <main class="main">
   <div class="inner">
-    <div class="page-title">Good day, Deric! 👋</div>
-    <div class="page-sub">Here is what is happening with your leads today.</div>
+    <div class="page-title">Dashboard</div>
+    <div class="page-sub">Overview of your leads and performance</div>
 
-    <!-- Stat cards -->
-    <div class="stats">
-      <div class="stat"><div class="stat-ico ico-purple"><i class="fas fa-users"></i></div><div><div class="stat-num" id="s-total">—</div><div class="stat-lbl">Total Leads</div></div></div>
-      <div class="stat"><div class="stat-ico ico-cyan"><i class="fas fa-star"></i></div><div><div class="stat-num" id="s-new">—</div><div class="stat-lbl">New Leads</div></div></div>
-      <div class="stat"><div class="stat-ico ico-yellow"><i class="fas fa-phone"></i></div><div><div class="stat-num" id="s-contacted">—</div><div class="stat-lbl">Contacted</div></div></div>
-      <div class="stat"><div class="stat-ico ico-green"><i class="fas fa-check-circle"></i></div><div><div class="stat-num" id="s-converted">—</div><div class="stat-lbl">Converted</div></div></div>
-    </div>
-
-    <!-- Charts -->
-    <div class="charts">
-      <div class="chart-card">
-        <div class="card-title">Lead Status Overview</div>
-        <div class="card-sub">How many leads are in each stage</div>
-        <div class="chart-box"><canvas id="barChart"></canvas></div>
-      </div>
-      <div class="chart-card">
-        <div class="card-title">Pipeline Breakdown</div>
-        <div class="card-sub">Visual split of all leads</div>
-        <div class="chart-box"><canvas id="donutChart"></canvas></div>
-      </div>
-    </div>
-
-    <!-- Recent leads -->
-    <div class="recent">
-      <div class="card-head">
-        <div>
-          <div class="card-title">Recent Leads</div>
-          <div class="card-sub" style="margin-bottom:0">Last 5 leads added</div>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon total"><i class="fas fa-users"></i></div>
+        <div class="stat-content">
+          <div class="stat-label">Total Leads</div>
+          <div class="stat-value" id="total-leads">0</div>
         </div>
-        <a href="leads.html" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
       </div>
-      <div style="overflow-x:auto">
-        <table>
-          <thead>
-            <tr><th>Name</th><th>Source</th><th>Status</th><th>Date Added</th></tr>
-          </thead>
-          <tbody id="recent-body">
-            <tr><td colspan="4"><div class="empty"><i class="fas fa-spinner fa-spin"></i></div></td></tr>
-          </tbody>
-        </table>
+      <div class="stat-card">
+        <div class="stat-icon new"><i class="fas fa-star"></i></div>
+        <div class="stat-content">
+          <div class="stat-label">New</div>
+          <div class="stat-value" id="new-leads">0</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon contacted"><i class="fas fa-phone"></i></div>
+        <div class="stat-content">
+          <div class="stat-label">Contacted</div>
+          <div class="stat-value" id="contacted-leads">0</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon converted"><i class="fas fa-check-circle"></i></div>
+        <div class="stat-content">
+          <div class="stat-label">Converted</div>
+          <div class="stat-value" id="converted-leads">0</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="recent-card">
+      <div class="recent-header" style="display:flex;justify-content:space-between;align-items:center;">
+        <div class="recent-title"><i class="fas fa-clock"></i> Recent Leads</div>
+        <div style="display:flex;gap:0.5rem;">
+          <button id="prev-btn" onclick="prevPage()" style="padding:0.5rem 1rem;background:#e0e7ff;color:#6366f1;border:none;border-radius:8px;cursor:pointer;font-weight:600;font-size:0.8rem;transition:all 0.2s;" onmouseover="this.style.background='#c7d2fe'" onmouseout="this.style.background='#e0e7ff'"><i class="fas fa-chevron-left"></i> Prev</button>
+          <span id="page-info" style="padding:0.5rem 1rem;color:var(--muted);font-weight:600;font-size:0.8rem;">1 of 1</span>
+          <button id="next-btn" onclick="nextPage()" style="padding:0.5rem 1rem;background:#e0e7ff;color:#6366f1;border:none;border-radius:8px;cursor:pointer;font-weight:600;font-size:0.8rem;transition:all 0.2s;" onmouseover="this.style.background='#c7d2fe'" onmouseout="this.style.background='#e0e7ff'">Next <i class="fas fa-chevron-right"></i></button>
+        </div>
+      </div>
+      <div class="recent-body" id="recent-leads">
+        <div class="empty-state"><i class="fas fa-inbox"></i><p>No leads yet</p></div>
       </div>
     </div>
   </div>
@@ -208,131 +188,94 @@
   const API = 'http://localhost:5001/api';
   const token = localStorage.getItem('crm_token');
   if (!token) window.location.href = 'index.html';
-  const H = { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' };
+  const H = { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' };
 
-  // Theme
-  const saved = localStorage.getItem('crm_theme') || 'light';
-  document.documentElement.setAttribute('data-theme', saved);
-  document.getElementById('theme-icon').className = saved === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+  let allLeads = [];
+  let currentPage = 1;
+  const itemsPerPage = 2;
 
+  // UI Helpers
+  function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
+  function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('show'); }
   function toggleTheme() {
-    const curr = document.documentElement.getAttribute('data-theme');
-    const next = curr === 'dark' ? 'light' : 'dark';
+    const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', next);
     localStorage.setItem('crm_theme', next);
     document.getElementById('theme-icon').className = next === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
-    loadDashboard(); // reload charts with new colors
   }
-
-  // Sidebar (mobile)
-  function toggleSidebar() {
-    document.getElementById('sidebar').classList.toggle('open');
-    document.getElementById('overlay').classList.toggle('show');
-  }
-  function closeSidebar() {
-    document.getElementById('sidebar').classList.remove('open');
-    document.getElementById('overlay').classList.remove('show');
-  }
-
-  // Logout
   function logout() { localStorage.removeItem('crm_token'); window.location.href = 'index.html'; }
 
-  // Date
-  document.getElementById('date-txt').textContent =
-    new Date().toLocaleDateString('en-US', { weekday:'short', month:'short', day:'numeric', year:'numeric' });
+  // Pagination
+  function renderRecentLeads() {
+    const start = (currentPage - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    const recent = allLeads.slice(0, 10).slice(start, end);
+    const total = Math.ceil(Math.min(allLeads.length, 10) / itemsPerPage);
 
-  // Badge helper
-  function badge(s) {
-    const map = { new:'b-new', contacted:'b-contacted', converted:'b-converted', lost:'b-lost' };
-    return `<span class="badge ${map[s]||'b-new'}">${s}</span>`;
+    const recentEl = document.getElementById('recent-leads');
+    if (recent.length === 0) {
+      recentEl.innerHTML = '<div class="empty-state"><i class="fas fa-inbox"></i><p>No leads yet</p></div>';
+    } else {
+      recentEl.innerHTML = recent.map(l => `
+        <div class="lead-item">
+          <div class="lead-info">
+            <div class="lead-name">${l.name}</div>
+            <div class="lead-email">${l.email}</div>
+            <div class="lead-meta">
+              <span class="badge-small b-${l.status}">${l.status}</span>
+              <span style="font-size:0.7rem;color:var(--muted);">${l.source}</span>
+            </div>
+          </div>
+        </div>`).join('');
+    }
+
+    // Update page info
+    document.getElementById('page-info').textContent = `${currentPage} of ${total || 1}`;
+    document.getElementById('prev-btn').disabled = currentPage === 1;
+    document.getElementById('next-btn').disabled = currentPage === total;
+    document.getElementById('prev-btn').style.opacity = currentPage === 1 ? '0.5' : '1';
+    document.getElementById('next-btn').style.opacity = currentPage === total ? '0.5' : '1';
   }
 
-  let barC, donutC;
+  function nextPage() {
+    const total = Math.ceil(Math.min(allLeads.length, 10) / itemsPerPage);
+    if (currentPage < total) { currentPage++; renderRecentLeads(); }
+  }
 
+  function prevPage() {
+    if (currentPage > 1) { currentPage--; renderRecentLeads(); }
+  }
+
+  // Load Dashboard Data
   async function loadDashboard() {
     try {
-      const [sRes, lRes] = await Promise.all([
-        fetch(`${API}/leads/stats`, { headers: H }),
-        fetch(`${API}/leads`,       { headers: H })
-      ]);
-      if (sRes.status === 401) { logout(); return; }
+      const res = await fetch(`${API}/leads`, { headers: H });
+      if (res.status === 401) return logout();
+      allLeads = await res.json();
 
-      const stats = await sRes.json();
-      const leads = await lRes.json();
-      const dark  = document.documentElement.getAttribute('data-theme') === 'dark';
-      const grid  = dark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)';
-      const tick  = dark ? '#64748b' : '#94a3b8';
-      const leg   = dark ? '#94a3b8' : '#475569';
+      // Calculate stats
+      const total = allLeads.length;
+      const newCount = allLeads.filter(l => l.status === 'new').length;
+      const contacted = allLeads.filter(l => l.status === 'contacted').length;
+      const converted = allLeads.filter(l => l.status === 'converted').length;
 
-      // Fill stat numbers
-      document.getElementById('s-total').textContent     = stats.total     || 0;
-      document.getElementById('s-new').textContent       = stats.new       || 0;
-      document.getElementById('s-contacted').textContent = stats.contacted || 0;
-      document.getElementById('s-converted').textContent = stats.converted || 0;
+      // Update stat cards
+      document.getElementById('total-leads').textContent = total;
+      document.getElementById('new-leads').textContent = newCount;
+      document.getElementById('contacted-leads').textContent = contacted;
+      document.getElementById('converted-leads').textContent = converted;
 
-      // Bar chart
-      if (barC) barC.destroy();
-      barC = new Chart(document.getElementById('barChart'), {
-        type: 'bar',
-        data: {
-          labels: ['New', 'Contacted', 'Converted', 'Lost'],
-          datasets: [{
-            label: 'Leads',
-            data: [stats.new||0, stats.contacted||0, stats.converted||0, stats.lost||0],
-            backgroundColor: ['rgba(99,102,241,0.85)','rgba(245,158,11,0.85)','rgba(16,185,129,0.85)','rgba(239,68,68,0.85)'],
-            borderRadius: 8, borderSkipped: false
-          }]
-        },
-        options: {
-          responsive: true, maintainAspectRatio: false,
-          plugins: { legend: { display: false } },
-          scales: {
-            y: { beginAtZero: true, ticks: { stepSize:1, color:tick, font:{family:'Plus Jakarta Sans'} }, grid: { color:grid } },
-            x: { ticks: { color:tick, font:{family:'Plus Jakarta Sans'} }, grid: { display:false } }
-          }
-        }
-      });
-
-      // Donut chart
-      if (donutC) donutC.destroy();
-      donutC = new Chart(document.getElementById('donutChart'), {
-        type: 'doughnut',
-        data: {
-          labels: ['New', 'Contacted', 'Converted', 'Lost'],
-          datasets: [{
-            data: [stats.new||0, stats.contacted||0, stats.converted||0, stats.lost||0],
-            backgroundColor: ['#6366f1','#f59e0b','#10b981','#ef4444'],
-            borderWidth: 0, hoverOffset: 8
-          }]
-        },
-        options: {
-          responsive: true, maintainAspectRatio: false, cutout: '72%',
-          plugins: {
-            legend: {
-              position: 'bottom',
-              labels: { color:leg, font:{family:'Plus Jakarta Sans', size:11}, padding:14, usePointStyle:true }
-            }
-          }
-        }
-      });
-
-      // Recent leads table
-      const tbody = document.getElementById('recent-body');
-      const recent = leads.slice(0, 5);
-      if (!recent.length) {
-        tbody.innerHTML = `<tr><td colspan="4"><div class="empty"><i class="fas fa-users"></i><p>No leads yet. <a href="leads.html" style="color:#6366f1">Add your first one →</a></p></div></td></tr>`;
-      } else {
-        tbody.innerHTML = recent.map(l => `
-          <tr>
-            <td><div class="lead-name">${l.name}</div><div class="lead-email">${l.email}</div></td>
-            <td><span class="src-tag">${l.source}</span></td>
-            <td>${badge(l.status)}</td>
-            <td style="color:var(--muted);font-size:0.8rem">${new Date(l.createdAt).toLocaleDateString()}</td>
-          </tr>`).join('');
-      }
-
-    } catch(e) { console.error(e); }
+      currentPage = 1;
+      renderRecentLeads();
+    } catch (err) {
+      console.error('Error loading dashboard:', err);
+    }
   }
+
+  // Init Theme
+  const saved = localStorage.getItem('crm_theme') || 'light';
+  document.documentElement.setAttribute('data-theme', saved);
+  document.getElementById('theme-icon').className = saved === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
 
   loadDashboard();
 </script>

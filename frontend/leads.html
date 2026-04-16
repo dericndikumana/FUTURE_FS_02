@@ -7,6 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <style>
+    /* ── YOUR ORIGINAL DESIGN STYLES ── */
     [data-theme="light"] { --bg:#f1f5f9; --surface:#ffffff; --surface2:#f8fafc; --text:#0f172a; --text2:#475569; --muted:#94a3b8; --border:#e2e8f0; }
     [data-theme="dark"]  { --bg:#0f172a; --surface:#1e293b; --surface2:#162032; --text:#f1f5f9; --text2:#94a3b8; --muted:#64748b; --border:#334155; }
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
@@ -94,9 +95,7 @@
     .form-group{margin-bottom:1rem;}
     .form-group label{display:block;font-size:0.78rem;font-weight:700;margin-bottom:0.4rem;color:var(--text);}
     .form-group input,.form-group select,.form-group textarea{width:100%;padding:0.75rem;border:1.5px solid var(--border);border-radius:10px;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.88rem;color:var(--text);background:var(--surface2);outline:none;transition:all 0.2s;font-weight:500;}
-    .form-group input::placeholder,.form-group textarea::placeholder{color:var(--muted);}
     .form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:#6366f1;background:var(--surface);box-shadow:0 0 0 3px rgba(99,102,241,0.1);}
-    .form-group textarea{resize:vertical;min-height:80px;}
     .form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
     .submit-btn{width:100%;padding:0.875rem;background:linear-gradient(135deg,#6366f1,#4f46e5);color:white;border:none;border-radius:10px;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.95rem;font-weight:700;cursor:pointer;transition:all 0.2s;margin-top:0.5rem;}
     .submit-btn:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(99,102,241,0.35);}
@@ -117,7 +116,6 @@
     .note-add-btn{padding:0.65rem 1rem;background:#6366f1;color:white;border:none;border-radius:9px;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.82rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:all 0.2s;}
     .note-add-btn:hover{background:#4f46e5;}
     .status-sel{width:100%;padding:0.7rem 0.9rem;border:1.5px solid var(--border);border-radius:9px;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.88rem;background:var(--surface2);color:var(--text);outline:none;cursor:pointer;font-weight:600;}
-    .status-sel:focus{border-color:#6366f1;}
 
     /* TOAST */
     .toast{position:fixed;bottom:1.5rem;right:1.5rem;padding:0.75rem 1.25rem;border-radius:12px;font-size:0.84rem;font-weight:700;z-index:999;transform:translateY(80px);opacity:0;transition:all 0.3s;max-width:300px;}
@@ -137,17 +135,12 @@
       .form-row{grid-template-columns:1fr;}
       .detail-grid{grid-template-columns:1fr;}
     }
-    @media(max-width:480px){
-      .inner{padding:1rem;}
-      .add-btn span{display:none;}
-    }
   </style>
 </head>
 <body>
 
 <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
 
-<!-- SIDEBAR -->
 <aside class="sidebar" id="sidebar">
   <div class="sidebar-logo">
     <div class="logo-icon"><i class="fas fa-chart-line"></i></div>
@@ -156,7 +149,7 @@
   <nav class="sidebar-nav">
     <div class="nav-section">Main</div>
     <a href="dashboard.html" class="nav-item"><i class="fas fa-th-large"></i> Dashboard</a>
-    <a href="leads.html"     class="nav-item active"><i class="fas fa-users"></i> All Leads</a>
+    <a href="leads.html" class="nav-item active"><i class="fas fa-users"></i> All Leads</a>
     <div class="nav-section">Account</div>
     <a href="#" class="nav-item" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
   </nav>
@@ -165,14 +158,13 @@
       <div class="admin-av">D</div>
       <div>
         <div class="admin-name">Deric Ndikumana</div>
-        <div class="admin-role">Admin · CIN: FIT/MAR26/FS14315</div>
+        <div class="admin-role">Admin · FIT/MAR26/FS14315</div>
       </div>
     </div>
     <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Sign Out</button>
   </div>
 </aside>
 
-<!-- TOPBAR -->
 <div class="topbar">
   <div class="topbar-left">
     <button class="menu-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
@@ -184,17 +176,15 @@
   </div>
 </div>
 
-<!-- MAIN -->
 <main class="main">
   <div class="inner">
     <div class="page-title">All Leads</div>
     <div class="page-sub">Manage and track all your client leads</div>
 
-    <!-- Search and filter bar -->
     <div class="toolbar">
       <div class="search-wrap">
         <i class="fas fa-search"></i>
-        <input type="text" class="search-input" id="search" placeholder="Search by name or email..." oninput="filter()"/>
+        <input type="text" class="search-input" id="search" placeholder="Search by name..." oninput="filter()"/>
       </div>
       <select class="filter-sel" id="f-status" onchange="filter()">
         <option value="">All Status</option>
@@ -203,16 +193,8 @@
         <option value="converted">Converted</option>
         <option value="lost">Lost</option>
       </select>
-      <select class="filter-sel" id="f-source" onchange="filter()">
-        <option value="">All Sources</option>
-        <option value="Website">Website</option>
-        <option value="LinkedIn">LinkedIn</option>
-        <option value="Referral">Referral</option>
-        <option value="Other">Other</option>
-      </select>
     </div>
 
-    <!-- Leads table -->
     <div class="table-card">
       <div class="table-wrap">
         <table>
@@ -236,7 +218,6 @@
   </div>
 </main>
 
-<!-- ADD / EDIT MODAL -->
 <div class="modal-bg" id="form-modal">
   <div class="modal">
     <div class="modal-head">
@@ -246,19 +227,21 @@
     <form id="lead-form" onsubmit="submitLead(event)">
       <input type="hidden" id="lead-id"/>
       <div class="form-row">
-        <div class="form-group"><label>Full Name *</label><input type="text" id="f-name" placeholder="John Doe" required/></div>
-        <div class="form-group"><label>Email *</label><input type="email" id="f-email" placeholder="john@example.com" required/></div>
+        <div class="form-group"><label>Full Name *</label><input type="text" id="f-name" placeholder="e.g., John Doe" required/></div>
+        <div class="form-group"><label>Email *</label><input type="email" id="f-email" placeholder="e.g., john@example.com" required/></div>
       </div>
       <div class="form-row">
-        <div class="form-group"><label>Phone</label><input type="text" id="f-phone" placeholder="+250 7XX XXX XXX"/></div>
-        <div class="form-group"><label>Source</label>
+        <div class="form-group"><label>Phone</label><input type="text" id="f-phone" placeholder="e.g., +250 788 123 456"/></div>
+        <div class="form-group">
+          <label>Source</label>
           <select id="f-source-sel">
             <option>Website</option><option>LinkedIn</option><option>Referral</option><option>Other</option>
           </select>
         </div>
       </div>
       <div class="form-row">
-        <div class="form-group"><label>Status</label>
+        <div class="form-group">
+          <label>Status</label>
           <select id="f-status-sel">
             <option value="new">New</option><option value="contacted">Contacted</option>
             <option value="converted">Converted</option><option value="lost">Lost</option>
@@ -266,61 +249,58 @@
         </div>
         <div class="form-group"><label>Follow-Up Date</label><input type="date" id="f-followup"/></div>
       </div>
-      <button type="submit" class="submit-btn" id="form-btn"><i class="fas fa-plus"></i> Add Lead</button>
+      <button type="submit" class="submit-btn" id="form-btn">Add Lead</button>
     </form>
   </div>
 </div>
 
-<!-- VIEW / DETAIL MODAL -->
 <div class="modal-bg" id="detail-modal">
   <div class="modal">
     <div class="modal-head">
-      <div class="modal-title" id="d-name">Lead Details</div>
+      <div class="modal-title" id="d-name-title">Lead Details</div>
       <button class="close-btn" onclick="closeModal('detail-modal')"><i class="fas fa-times"></i></button>
     </div>
-
-    <!-- Contact info -->
     <div class="detail-section">
-      <div class="detail-label">Contact Info</div>
       <div class="detail-grid">
-        <div class="detail-item"><div class="detail-item-label">Email</div><div class="detail-item-value" id="d-email">—</div></div>
-        <div class="detail-item"><div class="detail-item-label">Phone</div><div class="detail-item-value" id="d-phone">—</div></div>
-        <div class="detail-item"><div class="detail-item-label">Source</div><div class="detail-item-value" id="d-source">—</div></div>
-        <div class="detail-item"><div class="detail-item-label">Follow-Up</div><div class="detail-item-value" id="d-followup">—</div></div>
+        <div class="detail-item"><div class="detail-item-label">Email</div><div class="detail-item-value" id="d-email"></div></div>
+        <div class="detail-item"><div class="detail-item-label">Phone</div><div class="detail-item-value" id="d-phone"></div></div>
+        <div class="detail-item"><div class="detail-item-label">Source</div><div class="detail-item-value" id="d-source"></div></div>
+        <div class="detail-item"><div class="detail-item-label">Follow-Up</div><div class="detail-item-value" id="d-followup"></div></div>
       </div>
     </div>
-
-    <!-- Update status -->
     <div class="detail-section">
-      <div class="detail-label">Update Status</div>
+      <div class="detail-label">Status</div>
       <select class="status-sel" id="d-status" onchange="updateStatus()"></select>
     </div>
-
-    <!-- Notes -->
     <div class="detail-section">
-      <div class="detail-label">Notes & Follow-Ups</div>
+      <div class="detail-label">Notes</div>
       <div class="notes-list" id="notes-list"></div>
       <div class="note-row">
-        <input type="text" id="note-input" placeholder="Write a note or follow-up here..."/>
-        <button class="note-add-btn" onclick="addNote()"><i class="fas fa-plus"></i> Add</button>
+        <input type="text" id="note-input" placeholder="Add a note..."/>
+        <button class="note-add-btn" onclick="addNote()">Add</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Toast notification -->
 <div class="toast" id="toast"></div>
 
 <script>
-  const API   = 'http://localhost:5001/api';
+  const API = 'http://localhost:5001/api';
   const token = localStorage.getItem('crm_token');
   if (!token) window.location.href = 'index.html';
-  const H = { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' };
+  const H = { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' };
 
-  // Theme
-  const saved = localStorage.getItem('crm_theme') || 'light';
-  document.documentElement.setAttribute('data-theme', saved);
-  document.getElementById('theme-icon').className = saved === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+  let allLeads = [];
+  let currentId = null;
+
+  // Responsive UI
+  function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
+  function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('show'); }
+  function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+  function toast(msg, type) { const t = document.getElementById('toast'); t.textContent = msg; t.className = `toast show ${type}`; setTimeout(() => t.classList.remove('show'), 3000); }
+
+  // Theme Logic
   function toggleTheme() {
     const curr = document.documentElement.getAttribute('data-theme');
     const next = curr === 'dark' ? 'light' : 'dark';
@@ -328,217 +308,174 @@
     localStorage.setItem('crm_theme', next);
     document.getElementById('theme-icon').className = next === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
   }
+  const savedTheme = localStorage.getItem('crm_theme') || 'light';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  document.getElementById('theme-icon').className = savedTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
 
-  // Sidebar (mobile)
-  function toggleSidebar() {
-    document.getElementById('sidebar').classList.toggle('open');
-    document.getElementById('overlay').classList.toggle('show');
-  }
-  function closeSidebar() {
-    document.getElementById('sidebar').classList.remove('open');
-    document.getElementById('overlay').classList.remove('show');
-  }
-
-  // Logout
   function logout() { localStorage.removeItem('crm_token'); window.location.href = 'index.html'; }
 
-  // Show a short popup message
-  function toast(msg, type='ok') {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.className = `toast ${type} show`;
-    setTimeout(() => t.className = 'toast', 3000);
-  }
-
-  // Badge HTML
-  function badge(s) {
-    const m = { new:'b-new', contacted:'b-contacted', converted:'b-converted', lost:'b-lost' };
-    return `<span class="badge ${m[s]||'b-new'}">${s}</span>`;
-  }
-
-  let allLeads = [];      // all leads from server
-  let currentId = null;   // lead currently open in detail modal
-
-  // Load all leads from server
+  // Core Data Functions
   async function loadLeads() {
     try {
       const res = await fetch(`${API}/leads`, { headers: H });
-      if (res.status === 401) { logout(); return; }
+      if (res.status === 401) return logout();
       allLeads = await res.json();
       render(allLeads);
-    } catch { toast('Could not load leads', 'err'); }
+    } catch { toast('Connection error', 'err'); }
   }
 
-  // Draw the leads table
+  function badge(s) {
+    const map = { new:'b-new', contacted:'b-contacted', converted:'b-converted', lost:'b-lost' };
+    return `<span class="badge ${map[s]||'b-new'}">${s.toUpperCase()}</span>`;
+  }
+
   function render(list) {
     const tbody = document.getElementById('leads-body');
-    if (!list.length) {
-      tbody.innerHTML = `<tr><td colspan="7"><div class="empty"><i class="fas fa-users"></i><p>No leads found. Click "Add Lead" to start!</p></div></td></tr>`;
-      return;
-    }
+    if(!list.length) { tbody.innerHTML = '<tr><td colspan="7"><div class="empty">No leads found.</div></td></tr>'; return; }
     tbody.innerHTML = list.map(l => `
       <tr>
         <td><div class="lead-name">${l.name}</div><div class="lead-email">${l.email}</div></td>
-        <td style="color:var(--muted);font-size:0.83rem">${l.phone || '—'}</td>
+        <td>${l.phone || '—'}</td>
         <td><span class="src-tag">${l.source}</span></td>
         <td>${badge(l.status)}</td>
-        <td style="color:var(--muted);font-size:0.8rem">${l.followUpDate ? new Date(l.followUpDate).toLocaleDateString() : '—'}</td>
-        <td style="color:var(--muted);font-size:0.8rem">${new Date(l.createdAt).toLocaleDateString()}</td>
+        <td>${l.followUpDate ? new Date(l.followUpDate).toLocaleDateString() : '—'}</td>
+        <td>${new Date(l.created_at).toLocaleDateString()}</td>
         <td>
           <div class="actions">
-            <button class="action-btn" onclick="openDetail('${l._id}')" title="View details"><i class="fas fa-eye"></i></button>
-            <button class="action-btn" onclick="openEdit('${l._id}')"   title="Edit"><i class="fas fa-pencil-alt"></i></button>
-            <button class="action-btn del" onclick="deleteLead('${l._id}')" title="Delete"><i class="fas fa-trash"></i></button>
+            <button class="action-btn" onclick="openDetail(${l.id})"><i class="fas fa-eye"></i></button>
+            <button class="action-btn" onclick="openEdit(${l.id})"><i class="fas fa-pencil-alt"></i></button>
+            <button class="action-btn del" onclick="deleteLead(${l.id})"><i class="fas fa-trash"></i></button>
           </div>
         </td>
       </tr>`).join('');
   }
 
-  // Filter leads by search text, status, source
   function filter() {
-    const q   = document.getElementById('search').value.toLowerCase();
-    const st  = document.getElementById('f-status').value;
-    const src = document.getElementById('f-source').value;
-    render(allLeads.filter(l =>
-      (!q   || l.name.toLowerCase().includes(q) || l.email.toLowerCase().includes(q)) &&
-      (!st  || l.status === st) &&
-      (!src || l.source === src)
-    ));
+    const s = document.getElementById('search').value.toLowerCase();
+    const st = document.getElementById('f-status').value;
+    const filtered = allLeads.filter(l => 
+      (l.name.toLowerCase().includes(s) || l.email.toLowerCase().includes(s)) &&
+      (st === '' || l.status === st)
+    );
+    render(filtered);
   }
 
-  // Open add new lead modal
   function openAdd() {
+    currentId = null;
     document.getElementById('modal-title').textContent = 'Add New Lead';
-    document.getElementById('form-btn').innerHTML = '<i class="fas fa-plus"></i> Add Lead';
-    document.getElementById('lead-id').value = '';
+    document.getElementById('form-btn').textContent = 'Add Lead';
     document.getElementById('lead-form').reset();
     document.getElementById('form-modal').classList.add('open');
   }
 
-  // Open edit lead modal
   function openEdit(id) {
-    const l = allLeads.find(x => x._id === id);
-    if (!l) return;
+    const l = allLeads.find(x => x.id == id);
+    if(!l) return;
+    currentId = id;
     document.getElementById('modal-title').textContent = 'Edit Lead';
-    document.getElementById('form-btn').innerHTML = '<i class="fas fa-save"></i> Save Changes';
-    document.getElementById('lead-id').value    = l._id;
-    document.getElementById('f-name').value     = l.name;
-    document.getElementById('f-email').value    = l.email;
-    document.getElementById('f-phone').value    = l.phone || '';
+    document.getElementById('form-btn').textContent = 'Save Changes';
+    document.getElementById('f-name').value = l.name;
+    document.getElementById('f-email').value = l.email;
+    document.getElementById('f-phone').value = l.phone || '';
     document.getElementById('f-source-sel').value = l.source;
     document.getElementById('f-status-sel').value = l.status;
-    document.getElementById('f-followup').value  = l.followUpDate ? l.followUpDate.split('T')[0] : '';
     document.getElementById('form-modal').classList.add('open');
   }
 
-  // Close any modal
-  function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-
-  // Submit add or edit form
+  // --- UPDATED SUBMISSION LOGIC WITH VALIDATION ---
   async function submitLead(e) {
     e.preventDefault();
-    const id   = document.getElementById('lead-id').value;
-    const body = {
-      name:         document.getElementById('f-name').value,
-      email:        document.getElementById('f-email').value,
-      phone:        document.getElementById('f-phone').value,
-      source:       document.getElementById('f-source-sel').value,
-      status:       document.getElementById('f-status-sel').value,
+    
+    const data = {
+      name: document.getElementById('f-name').value.trim(),
+      email: document.getElementById('f-email').value.trim(),
+      phone: document.getElementById('f-phone').value.trim(),
+      source: document.getElementById('f-source-sel').value,
+      status: document.getElementById('f-status-sel').value,
       followUpDate: document.getElementById('f-followup').value || null
     };
-    try {
-      const url    = id ? `${API}/leads/${id}` : `${API}/leads`;
-      const method = id ? 'PUT' : 'POST';
-      const res    = await fetch(url, { method, headers: H, body: JSON.stringify(body) });
-      if (res.ok) {
-        toast(id ? 'Lead updated!' : 'Lead added!');
-        closeModal('form-modal');
-        loadLeads();
-      } else { toast('Something went wrong', 'err'); }
-    } catch { toast('Cannot connect to server', 'err'); }
-  }
 
-  // Delete a lead
-  async function deleteLead(id) {
-    if (!confirm('Are you sure you want to delete this lead?')) return;
+    // Frontend Email Regex Validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(data.email)) {
+      return toast('Please enter a valid email address', 'err');
+    }
+
+    const method = currentId ? 'PUT' : 'POST';
+    const url = currentId ? `${API}/leads/${currentId}` : `${API}/leads`;
+
     try {
-      await fetch(`${API}/leads/${id}`, { method: 'DELETE', headers: H });
-      toast('Lead deleted');
+      const res = await fetch(url, { 
+        method, 
+        headers: H, 
+        body: JSON.stringify(data) 
+      });
+
+      const result = await res.json();
+
+      if (!res.ok) {
+        // Catches duplicate email error or other backend validation errors
+        return toast(result.message || 'Action failed', 'err');
+      }
+
+      closeModal('form-modal');
       loadLeads();
-    } catch { toast('Could not delete', 'err'); }
+      toast(currentId ? 'Lead Updated' : 'Lead Added', 'ok');
+    } catch (err) {
+      toast('Server unreachable. Try again.', 'err');
+    }
   }
 
-  // Open detail/notes modal
+  async function deleteLead(id) {
+    if(!confirm('Delete this lead?')) return;
+    const res = await fetch(`${API}/leads/${id}`, { method:'DELETE', headers:H });
+    if(res.ok) { loadLeads(); toast('Deleted', 'ok'); }
+  }
+
   function openDetail(id) {
-    const l = allLeads.find(x => x._id === id);
-    if (!l) return;
+    const l = allLeads.find(x => x.id == id);
+    if(!l) return;
     currentId = id;
-
-    document.getElementById('d-name').textContent    = l.name;
-    document.getElementById('d-email').textContent   = l.email;
-    document.getElementById('d-phone').textContent   = l.phone || '—';
-    document.getElementById('d-source').textContent  = l.source;
+    document.getElementById('d-name-title').textContent = l.name;
+    document.getElementById('d-email').textContent = l.email;
+    document.getElementById('d-phone').textContent = l.phone || '—';
+    document.getElementById('d-source').textContent = l.source;
     document.getElementById('d-followup').textContent = l.followUpDate ? new Date(l.followUpDate).toLocaleDateString() : '—';
-
-    // Fill status dropdown
+    
     const sel = document.getElementById('d-status');
     sel.innerHTML = ['new','contacted','converted','lost']
-      .map(s => `<option value="${s}" ${l.status===s?'selected':''}>${s.charAt(0).toUpperCase()+s.slice(1)}</option>`)
-      .join('');
-
-    // Show notes
-    renderNotes(l.notes || []);
-    document.getElementById('note-input').value = '';
+      .map(s => `<option value="${s}" ${l.status===s?'selected':''}>${s.toUpperCase()}</option>`).join('');
+    
+    renderNotes(l.notes);
     document.getElementById('detail-modal').classList.add('open');
   }
 
-  // Draw notes list
-  function renderNotes(notes) {
-    const list = document.getElementById('notes-list');
-    list.innerHTML = notes.length
-      ? notes.map(n => `
-          <div class="note-item">
-            ${n.text}
-            <div class="note-date">${new Date(n.createdAt).toLocaleString()}</div>
-          </div>`).join('')
-      : '<div style="color:var(--muted);font-size:0.83rem;text-align:center;padding:1rem">No notes yet</div>';
-  }
-
-  // Update lead status from detail modal
   async function updateStatus() {
-    if (!currentId) return;
     const status = document.getElementById('d-status').value;
-    try {
-      await fetch(`${API}/leads/${currentId}`, { method:'PUT', headers:H, body:JSON.stringify({ status }) });
-      toast('Status updated!');
-      loadLeads();
-    } catch { toast('Could not update', 'err'); }
+    await fetch(`${API}/leads/${currentId}`, { method:'PUT', headers:H, body:JSON.stringify({ status }) });
+    loadLeads();
+    toast('Status Updated', 'ok');
   }
 
-  // Add a note to a lead
   async function addNote() {
     const text = document.getElementById('note-input').value.trim();
-    if (!text || !currentId) return;
-    try {
-      const res = await fetch(`${API}/leads/${currentId}/notes`, {
-        method: 'POST', headers: H, body: JSON.stringify({ text })
-      });
-      if (res.ok) {
-        const updated = await res.json();
-        renderNotes(updated.notes);
-        document.getElementById('note-input').value = '';
-        toast('Note added!');
-        loadLeads();
-      }
-    } catch { toast('Could not add note', 'err'); }
+    if(!text) return;
+    const res = await fetch(`${API}/leads/${currentId}/notes`, { method:'POST', headers:H, body:JSON.stringify({ text }) });
+    const updated = await res.json();
+    renderNotes(updated.notes);
+    document.getElementById('note-input').value = '';
+    loadLeads();
   }
 
-  // Close modal when clicking outside
-  document.querySelectorAll('.modal-bg').forEach(m => {
-    m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open'); });
-  });
+  function renderNotes(notes) {
+    const list = document.getElementById('notes-list');
+    list.innerHTML = (notes || []).map(n => `
+      <div class="note-item">
+        <div>${n.text}</div>
+        <div class="note-date">${new Date(n.createdAt).toLocaleString()}</div>
+      </div>`).join('');
+  }
 
-  // Start
   loadLeads();
 </script>
 </body>
