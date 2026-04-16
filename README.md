@@ -78,16 +78,15 @@ http://localhost:5001
 ## 📸 Screenshots
 
 ### Login Page
-![Login Page](https://via.placeholder.com/800x500?text=Login+Page)
+![Login Page] ![alt text](2.png)
 
 ### Dashboard Overview
-![Dashboard](https://via.placeholder.com/800x500?text=Dashboard+with+Stats)
-
+![Dashboard] ![alt text](3.png)
 ### All Leads View
-![Leads Table](https://via.placeholder.com/800x500?text=Leads+Management+Table)
+![Leads Table] ![alt text](1.png)
 
 ### Lead Detail Modal
-![Lead Detail](https://via.placeholder.com/800x500?text=Lead+Details+Modal)
+![Lead Detail] ![alt text](4.png)
 
 ---
 
